@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "azt-logging"
+version = "0.0.1"
+description = "A lightweight Python wrapper around Microsoft Graph API for sending email, working with users, and SharePoint operations."
+authors = [
+    { name="runway28R" }
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+
+requires-python = ">=3.14"
+
+# Add your dependencies here
+dependencies = [
+    "azure-data-tables>=12.7.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/runway28R/azt-logging"
+Source = "https://github.com/runway28R/azt-logging"
+Issues = "https://github.com/runway28R/azt-logging/issues"
+
+[tool.setuptools]
+package-dir = {"" = "azt-logging"}
+
+[tool.setuptools.packages.find]
+where = ["azt-logging"]

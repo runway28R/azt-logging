@@ -1,0 +1,66 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.so
+
+# --- Virtual Environments ---
+.venv/
+venv/
+env/
+ENV/
+*.env
+*.venv
+
+# --- Logs and Temp ---
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# --- Data files ---
+data/
+datasets/
+*.csv
+*.tsv
+*.json
+*.parquet
+*.xlsx
+*.zip
+*.gz
+
+# --- Jupyter Notebooks checkpoints ---
+.ipynb_checkpoints/
+
+# --- Compiled or cache ---
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# --- IDE / Editor ---
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# --- OS files ---
+.DS_Store
+Thumbs.db
+
+# --- Environment and secrets ---
+.env
+.env.*
+*.key
+*.pem
+*.pkl
+*.db
+credentials.json
+config.json
+secrets.yaml
+
+# --- Tests and coverage ---
+.coverage
+htmlcov/
+.pytest_cache/

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="azt-logging",
-    version="0.0.1",
+    version="0.0.2",
     description="Logging solution to store entries in Azure Data Tables.",
     long_description=open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",

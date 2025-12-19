@@ -1,6 +1,7 @@
 import logging
 from socket import gethostname
 from azure.data.tables import TableServiceClient
+from azure.core.exceptions import ResourceExistsError
 
 
 class table_logger:
@@ -11,7 +12,14 @@ class table_logger:
         #warning=30
         #error=40
         #critical=50
-        
+
+        self.st_account_name = st_account_name
+        self.account_key = account_key
+        self.table_name = table_name
+        self.connection_string = self.create_connection_string()
+
+        self.create_table()
+        table_client = self.create_table_client()
         self.logger = logging.getLogger(table_name)
         self.logger.setLevel(int(log_level))
 
@@ -19,29 +27,44 @@ class table_logger:
         if len(self.logger.handlers) > 0:
             self.logger.handlers.clear()
 
-        log_handler = table_handler(st_account_name=st_account_name,
-                                            account_key=account_key,
-                                            table_name=table_name)
+        log_handler = table_handler(table_client=table_client)
         self.logger.addHandler(log_handler)
 
+
+    def create_connection_string(self):
+        connection_string = (
+            f"DefaultEndpointsProtocol=https;"
+            f"AccountName={self.st_account_name};"
+            f"AccountKey={self.account_key};"
+            f"EndpointSuffix=core.windows.net"
+        )
+        return connection_string
+
+
+    def create_table(self):
+        try:
+            service = TableServiceClient.from_connection_string(conn_str=self.connection_string)
+            service.create_table(table_name=self.table_name)
+        except ResourceExistsError:
+            pass  # Table already exists → nothing to do
+        except Exception as e:
+            print(e)
+
+    
+    def create_table_client(self):
+        service = TableServiceClient.from_connection_string(conn_str=self.connection_string)
+        self.table_client = service.get_table_client(table_name=self.table_name)
+        return self.table_client
+    
 
     def get_logger(self):
         return self.logger
         
 
 class table_handler(logging.Handler):
-    def __init__(self, st_account_name, account_key, table_name):
+    def __init__(self, table_client):
         logging.Handler.__init__(self)
-        #Connection string to the Table 'table_name' in Azure Storage Account 'account_name' with the authenticatoin key 'account_key'
-        connection_string = (
-            f"DefaultEndpointsProtocol=https;"
-            f"AccountName={st_account_name};"
-            f"AccountKey={account_key};"
-            f"EndpointSuffix=core.windows.net"
-        )
-
-        self.service = TableServiceClient.from_connection_string(conn_str=connection_string)
-        self.table_client = self.service.get_table_client(table_name=table_name)
+        self.table_client = table_client
         
         #Getting hostname of the system, it will be stored in a log entry
         self.hostname = gethostname()

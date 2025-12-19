@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "azt-logging"
-version = "0.0.1"
+version = "0.0.2"
 description = "A lightweight Python wrapper around Microsoft Graph API for sending email, working with users, and SharePoint operations."
 authors = [
     { name="runway28R" }

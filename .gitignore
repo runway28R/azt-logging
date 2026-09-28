@@ -64,3 +64,6 @@ secrets.yaml
 .coverage
 htmlcov/
 .pytest_cache/
+
+
+uv.lock

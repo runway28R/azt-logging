@@ -1,25 +1,31 @@
-from datetime import datetime
 import logging
-from table_log_handler import table_log_handler
 
-class Log:
-    def __init__(st_account_name, account_key, log_table, log_level):
-        #logger.setLevel(logging.DEBUG)
-        #notset=0
-        #trace=5\does not exist!
-        #debug=10
-        #info=20
-        #warning=30
-        #error=40
-        #critical=50
-        
-        logger = logging.getLogger(log_table)
-        logger.setLevel(int(log_level))
-        if len(logger.handlers)>0:
-            logger.handlers.clear()
-        log_handler = table_log_handler(st_account_name=st_account_name,
-                                            account_key=account_key,
-                                            table_name=log_table)
-        logger.addHandler(log_handler)
+from .table_log_handler import table_logger
 
-        return logger
+
+def create_logger(
+    st_account_name: str,
+    account_key: str,
+    table_name: str,
+    log_level: int = logging.INFO,
+) -> logging.Logger:
+    """
+    Creates a logger that stores records in an Azure Table Storage table.
+
+    Args:
+        st_account_name (str): Azure Storage account name.
+        account_key (str): Azure Storage account access key.
+        table_name (str): Name of the Azure Table Storage table.
+        log_level (int): Logging level, such as logging.INFO or logging.DEBUG.
+
+    Returns:
+        logging.Logger: A configured logger that writes records to Azure Table Storage.
+    """
+    azure_logger = table_logger(
+        st_account_name=st_account_name,
+        account_key=account_key,
+        table_name=table_name,
+        log_level=log_level,
+    )
+
+    return azure_logger.get_logger()
